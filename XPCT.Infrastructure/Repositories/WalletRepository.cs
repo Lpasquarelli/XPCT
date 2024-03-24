@@ -13,11 +13,11 @@ namespace XPCT.Infrastructure.Repositories
         public List<Transaction> _Transactions = new();
         public List<Wallet> _Wallets = new();
 
-        public Wallet GetWalletByIdAsync(Guid id)
+        public Wallet GetWalletById(Guid id)
         {
             return _Wallets.FirstOrDefault(x => x.Id == id);
         }
-        public Wallet CreateWalletAsync(Wallet wallet)
+        public Wallet CreateWallet(Wallet wallet)
         {
             _Wallets.Add(wallet);
             return wallet;
@@ -25,7 +25,7 @@ namespace XPCT.Infrastructure.Repositories
 
         public Wallet AddInvestmentToWallet(Guid WalletId, Investment investment)
         {
-            var wallet = GetWalletByIdAsync(WalletId);
+            var wallet = GetWalletById(WalletId);
 
             if(!wallet.Investments.Any(x => x.Product.Id == investment.Product.Id))
                 wallet.Investments.Add(investment);
@@ -40,7 +40,7 @@ namespace XPCT.Infrastructure.Repositories
 
         public Wallet SellInvestment(Guid walletId, Guid productId, double quantity)
         {
-            var wallet = GetWalletByIdAsync(walletId);
+            var wallet = GetWalletById(walletId);
 
             var getInvestment = wallet.Investments.First(x => x.Product.Id == productId);
             if (getInvestment.Quantity > quantity)

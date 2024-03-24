@@ -12,27 +12,27 @@ namespace XPCT.Infrastructure.Repositories
     {
         public List<Product> Products = new();
 
-        public Product GetProductAsync(Guid id)
+        public Product GetProduct(Guid id)
         {
             return Products.FirstOrDefault(x => x.Id == id);
         }
-        public IEnumerable<Product> GetProductsAsync()
+        public IEnumerable<Product> GetProducts()
         {
             return Products.Where(x => x.Active);
         }
-        public Product AddProductAsync(Product product)
+        public Product AddProduct(Product product)
         {
             Products.Add(product);
             return product;
         }
-        public Product UpdateProductAsync(Product product)
+        public Product UpdateProduct(Product product)
         {
             var productFound = Products.First(x => x.Id == product.Id);
             var index = Products.IndexOf(productFound);
             Products[index] = product;
             return product;
         }
-        public Product ActivateProductAsync(Guid id)
+        public Product ActivateProduct(Guid id)
         {
             var productFound = Products.First(x => x.Id == id);
             var index = Products.IndexOf(productFound);
@@ -40,7 +40,7 @@ namespace XPCT.Infrastructure.Repositories
             Products[index] = productFound;
             return productFound;
         }
-        public Product DeactivateProductAsync(Guid id)
+        public Product DeactivateProduct(Guid id)
         {
             var productFound = Products.First(x => x.Id == id);
             var index = Products.IndexOf(productFound);

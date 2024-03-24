@@ -30,7 +30,7 @@ namespace XPCT.Application.Services
 
         }
 
-        public async Task<BuyInvestmentResult> BuyInvestmentAsync(Guid userId, double quantity, Guid productId)
+        public BuyInvestmentResult BuyInvestment(Guid userId, double quantity, Guid productId)
         {
             try
             {
@@ -39,12 +39,12 @@ namespace XPCT.Application.Services
                 if (user == null)
                     return BuyInvestmentResult.UserNotFound();
 
-                var searchProduct = _productRepository.GetProductAsync(productId);
+                var searchProduct = _productRepository.GetProduct(productId);
 
                 if (searchProduct == null)
                     return BuyInvestmentResult.ErrorSearchingProduct("product was not found");
 
-                var getWallet = _walletRepository.GetWalletByIdAsync(user.Wallet!.Id);
+                var getWallet = _walletRepository.GetWalletById(user.Wallet!.Id);
 
                 if(getWallet == null)
                     return BuyInvestmentResult.WalletNotFound();
@@ -69,7 +69,7 @@ namespace XPCT.Application.Services
                 return BuyInvestmentResult.InternalError(ex.Message);
             }
         }
-        public async Task<SellInvestmentResult> SellInvestmentAsync(Guid userId, double quantity, Guid productId)
+        public SellInvestmentResult SellInvestment(Guid userId, double quantity, Guid productId)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace XPCT.Application.Services
                 if (user == null)
                     return SellInvestmentResult.UserNotFound();
 
-                var searchProduct = _productRepository.GetProductAsync(productId);
+                var searchProduct = _productRepository.GetProduct(productId);
 
                 if (searchProduct == null)
                     return SellInvestmentResult.ErrorSearchingProduct("product was not found");
@@ -109,7 +109,7 @@ namespace XPCT.Application.Services
             }
         }
 
-        public async Task<GetWalletExtractResult> GetWalletExtractAsync(Guid userId, Guid? productId)
+        public GetWalletExtractResult GetWalletExtract(Guid userId, Guid? productId)
         {
             try
             {
@@ -134,7 +134,7 @@ namespace XPCT.Application.Services
                 return GetWalletExtractResult.InternalError(ex.Message);
             }
         }
-        public async Task<GetWalletInvestmentsResult> GetWalletInvestmentsAsync(Guid userId)
+        public GetWalletInvestmentsResult GetWalletInvestments(Guid userId)
         {
             try
             {

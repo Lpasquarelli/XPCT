@@ -44,7 +44,7 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> BuyInvestments([FromBody] BuyInvestmentsRequest request)
+        public IActionResult BuyInvestments([FromBody] BuyInvestmentsRequest request)
         {
             var prefix = "xpct.wal.buy";
             try
@@ -55,7 +55,7 @@ namespace XPCT.WebAPI.Controllers
                 if (!dataValidate.IsValid)
                     return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
 
-                var result = await _walletService.BuyInvestmentAsync(request.UserId, request.Quantity, request.ProductId);
+                var result = _walletService.BuyInvestment(request.UserId, request.Quantity, request.ProductId);
 
                 if (result.Status == BuyInvestmentStatus.Success)
                 {
@@ -82,7 +82,7 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> SellInvestments([FromBody] SellInvestmentsRequest request)
+        public IActionResult SellInvestments([FromBody] SellInvestmentsRequest request)
         {
             var prefix = "xpct.wal.sell";
             try
@@ -93,7 +93,7 @@ namespace XPCT.WebAPI.Controllers
                 if (!dataValidate.IsValid)
                     return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
 
-                var result = await _walletService.SellInvestmentAsync(request.UserId, request.Quantity, request.ProductId);
+                var result = _walletService.SellInvestment(request.UserId, request.Quantity, request.ProductId);
 
                 if (result.Status == SellInvestmentStatus.Success)
                 {
@@ -120,12 +120,12 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> GetWalletExtract([FromRoute] Guid userId, [FromQuery] Guid? productId)
+        public IActionResult GetWalletExtract([FromRoute] Guid userId, [FromQuery] Guid? productId)
         {
             var prefix = "xpct.wal.ext";
             try
             {
-                var result = await _walletService.GetWalletExtractAsync(userId, productId);
+                var result = _walletService.GetWalletExtract(userId, productId);
 
                 if (result.Status == GetWalletExtractStatus.Success)
                 {
@@ -151,12 +151,12 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> GetWalletInvestments([FromRoute] Guid userId)
+        public IActionResult GetWalletInvestments([FromRoute] Guid userId)
         {
             var prefix = "xpct.wal.inv";
             try
             {
-                var result = await _walletService.GetWalletInvestmentsAsync(userId);
+                var result = _walletService.GetWalletInvestments(userId);
 
                 if (result.Status == GetWalletInvestmentsStatus.Success)
                 {

@@ -41,7 +41,7 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(UserIdentifyerResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> AddUser([FromBody] AddUserRequest request)
+        public IActionResult AddUser([FromBody] AddUserRequest request)
         {
             var prefix = "xpct.user.add";
             try
@@ -53,7 +53,7 @@ namespace XPCT.WebAPI.Controllers
                 if (!dataValidate.IsValid)
                     return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
 
-                var result = await _userService.AddUser(request.Nome, request.Email, request.Operador);
+                var result = _userService.AddUser(request.Nome, request.Email, request.Operador);
 
                 if (result.Status == AddUserStatus.Success)
                 {
@@ -77,7 +77,7 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(UserTokenResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> GenerateUserToken([FromBody] GenerateUserTokenRequest request)
+        public IActionResult GenerateUserToken([FromBody] GenerateUserTokenRequest request)
         {
             var prefix = "xpct.user.add";
             try
@@ -88,7 +88,7 @@ namespace XPCT.WebAPI.Controllers
                 if (!dataValidate.IsValid)
                     return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
 
-                var result = await _userService.GenerateUserTokenAsync(request.userId);
+                var result = _userService.GenerateUserToken(request.userId);
 
                 if (result.Status == UserTokenStatus.Success)
                 {

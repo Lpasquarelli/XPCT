@@ -9,7 +9,7 @@ namespace XPCT.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<AddUserResult> AddUser(string nome, string email, bool operador);
-        Task<UserTokenResult> GenerateUserTokenAsync(Guid userId);
+        AddUserResult AddUser(string nome, string email, bool operador);
+        UserTokenResult GenerateUserToken(Guid userId);
     }
 }

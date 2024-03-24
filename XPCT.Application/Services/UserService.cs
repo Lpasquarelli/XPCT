@@ -33,7 +33,7 @@ namespace XPCT.Application.Services
             _config = config;
         }
 
-        public async Task<AddUserResult> AddUser(string nome, string email, bool operador)
+        public AddUserResult AddUser(string nome, string email, bool operador)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace XPCT.Application.Services
                 {
                     var wallet = new Wallet();
 
-                    var addWallet = _walletRepository.CreateWalletAsync(wallet);
+                    var addWallet = _walletRepository.CreateWallet(wallet);
 
                     if(addWallet == null)
                         return AddUserResult.ErrorCreatingUser("the user was created but the wallet don't");
@@ -83,7 +83,7 @@ namespace XPCT.Application.Services
             }
         }
 
-        public async Task<UserTokenResult> GenerateUserTokenAsync(Guid userId)
+        public UserTokenResult GenerateUserToken(Guid userId)
         {
             try
             {

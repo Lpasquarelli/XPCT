@@ -9,9 +9,9 @@ namespace XPCT.Application.Interfaces
 {
     public interface IWalletService
     {
-        Task<BuyInvestmentResult> BuyInvestmentAsync(Guid userId, double quantity, Guid productId);
-        Task<SellInvestmentResult> SellInvestmentAsync(Guid userId, double quantity, Guid productId);
-        Task<GetWalletExtractResult> GetWalletExtractAsync(Guid userId, Guid? productId);
-        Task<GetWalletInvestmentsResult> GetWalletInvestmentsAsync(Guid userId);
+        BuyInvestmentResult BuyInvestment(Guid userId, double quantity, Guid productId);
+        SellInvestmentResult SellInvestment(Guid userId, double quantity, Guid productId);
+        GetWalletExtractResult GetWalletExtract(Guid userId, Guid? productId);
+        GetWalletInvestmentsResult GetWalletInvestments(Guid userId);
     }
 }
