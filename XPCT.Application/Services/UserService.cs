@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -105,6 +106,27 @@ namespace XPCT.Application.Services
             {
                 _logger.LogCritical($"CRITICAL ERROR AT: {ex.StackTrace} || Error Message: {ex.Message}.");
                 return UserTokenResult.InternalError(ex.Message);
+            }
+        }
+
+        public GetUserWalletsUpcommingDueDateResult GetUserWalletsUpcommingDueDate()
+        {
+            try
+            {
+                var upcommingDueDateInvestments = _userRepository.GetUpCommingDueDatenvestmentsByUser();
+
+                if (upcommingDueDateInvestments == null)
+                    return GetUserWalletsUpcommingDueDateResult.ErrorGettingUserWalletsUpcommingDueDateStatus("an error occoured at getting the investments at upcomming due date");
+
+                if (!upcommingDueDateInvestments.Any())
+                    return GetUserWalletsUpcommingDueDateResult.NoContent();
+
+                return GetUserWalletsUpcommingDueDateResult.Success(upcommingDueDateInvestments);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"CRITICAL ERROR AT: {ex.StackTrace} || Error Message: {ex.Message}.");
+                return GetUserWalletsUpcommingDueDateResult.InternalError(ex.Message);
             }
         }
 

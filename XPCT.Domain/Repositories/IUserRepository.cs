@@ -13,6 +13,8 @@ namespace XPCT.Domain.Repositories
         User GetUserById(Guid id);
         User CreateUser(User user);
 
+        IEnumerable<User> GetUpCommingDueDatenvestmentsByUser();
+
         bool CreateUserWallet(Guid id, Wallet wallet);
     }
 }

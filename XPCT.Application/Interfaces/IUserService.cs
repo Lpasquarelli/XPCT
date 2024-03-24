@@ -11,5 +11,6 @@ namespace XPCT.Application.Interfaces
     {
         AddUserResult AddUser(string nome, string email, bool operador);
         UserTokenResult GenerateUserToken(Guid userId);
+        GetUserWalletsUpcommingDueDateResult GetUserWalletsUpcommingDueDate();
     }
 }

@@ -16,7 +16,9 @@ using XPCT.WebAPI.Models.Request.Wallet;
 using XPCT.WebAPI.Validators.Product;
 using XPCT.WebAPI.Validators.User;
 using XPCT.WebAPI.Validators.Wallet;
-using static System.Net.Mime.MediaTypeNames;
+using Quartz;
+using XPCT.WebAPI.Worker;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +43,26 @@ builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IWalletRepository, WalletRepository>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
+
+//Schedule Worker
+builder.Services.AddQuartz(options =>
+{
+    options.UseMicrosoftDependencyInjectionJobFactory();
+
+    var jobkey = JobKey.Create(nameof(WorkerEmailSenderUpcommingDueDates));
+    var interval = Convert.ToInt32(builder.Configuration.GetSection("WorkerSettings:ProccessScheduleHourInterval").Value);
+    options.AddJob<WorkerEmailSenderUpcommingDueDates>(jobkey)
+        .AddTrigger(t => t
+                    .ForJob(jobkey)
+                    .WithSimpleSchedule(s => s
+                                        .WithIntervalInHours(interval)
+                                        .RepeatForever()));   
+});
+
+builder.Services.AddQuartzHostedService(opt =>
+{
+    opt.WaitForJobsToComplete = true;
+});
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JWT:Key").Value);
 
