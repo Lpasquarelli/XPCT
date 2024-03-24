@@ -60,7 +60,7 @@ namespace XPCT.WebAPI.Controllers
                 if (result.Status == BuyInvestmentStatus.Success)
                 {
                     _logger.LogInformation($"Product purchased successfully.");
-                    return Ok(new WalletIdentifyerResponse(result.Wallet.Id, result.Message));
+                    return Ok(new WalletIdentifyerResponse(result.Wallet!.Id, result.Message));
                 }
 
                 _logger.LogError($"Error purchasing the product || Error Message: {result.Message}.");

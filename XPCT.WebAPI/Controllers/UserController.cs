@@ -58,7 +58,7 @@ namespace XPCT.WebAPI.Controllers
                 if (result.Status == AddUserStatus.Success)
                 {
                     _logger.LogInformation($"User registred successfully.");
-                    return Created("", new UserIdentifyerResponse(result.User.Id, result.Message));
+                    return Created("", new UserIdentifyerResponse(result.User!.Id, result.Message));
                 }
 
                 _logger.LogError($"Error registering the user || Error Message: {result.Message}.");
