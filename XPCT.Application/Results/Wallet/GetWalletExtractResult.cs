@@ -29,12 +29,12 @@ namespace XPCT.Application.Results.Wallet
             Extract = extract;
         }
 
-        public static GetWalletExtractResult Success(List<Investment> investments) =>
-            new(GetWalletExtractStatus.Success, "the extract was searched successfully", new ExtractResponse(investments));
+        public static GetWalletExtractResult Success(IEnumerable<Transaction> transactions) =>
+            new(GetWalletExtractStatus.Success, "the extract was searched successfully", new ExtractResponse(transactions));
         public static GetWalletExtractResult WalletNotFound() =>
             new(GetWalletExtractStatus.WalletNotFound, "the wallet was not found", null);
         public static GetWalletExtractResult UserNotFound() =>
-            new(GetWalletExtractStatus.ErrorSearchingWalletExtract, "the user was not found", null);
+            new(GetWalletExtractStatus.UserNotFound, "the user was not found", null);
         public static GetWalletExtractResult ErrorSearchingWalletExtract() =>
             new(GetWalletExtractStatus.ErrorSearchingWalletExtract, "an error when searching wallet extract has occoured", null);
         public static GetWalletExtractResult InternalError(string message) =>

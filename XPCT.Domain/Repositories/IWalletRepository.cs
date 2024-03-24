@@ -15,5 +15,7 @@ namespace XPCT.Domain.Repositories
         Wallet AddInvestmentToWallet(Guid walletId, Investment investment);
         Wallet SellInvestment(Guid walletId, Guid productId, double quantity);
 
+        void CreateTransaction(Transaction transaction);
+        IEnumerable<Transaction> GetExtract(Guid walletId, Guid? productId);
     }
 }

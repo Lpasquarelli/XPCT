@@ -7,13 +7,13 @@ using XPCT.Domain.Entities;
 
 namespace XPCT.Application.DTO.Response
 {
-    public class ExtractResponse
+    public class InvestmentsResponse
     {
-        public IEnumerable<Transaction> Transactions { get;private  set; }
+        public IEnumerable<Investment> Investments { get; private set; }
 
-        public ExtractResponse(IEnumerable<Transaction> transactions)
+        public InvestmentsResponse(IEnumerable<Investment> investments)
         {
-            Transactions = transactions;
+            Investments = investments;
         }
     }
 }

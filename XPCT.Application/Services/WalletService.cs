@@ -56,6 +56,10 @@ namespace XPCT.Application.Services
                 if (buyInvestment == null)
                     return BuyInvestmentResult.ErrorBuyingTheProduct();
 
+                var transaction = new Transaction(user.Wallet.Id, searchProduct, TransactionType.Draw, quantity, DateTime.Now);
+
+                _walletRepository.CreateTransaction(transaction);
+
                 return BuyInvestmentResult.Success(buyInvestment.Id);
 
             }
@@ -92,6 +96,10 @@ namespace XPCT.Application.Services
                 if (sellInvestment == null)
                     return SellInvestmentResult.ErrorSellingTheProduct();
 
+                var transaction = new Transaction(user.Wallet.Id, searchProduct, TransactionType.Withdraw, quantity, DateTime.Now);
+
+                _walletRepository.CreateTransaction(transaction); 
+
                 return SellInvestmentResult.Success(sellInvestment.Id);
             }
             catch (Exception ex)
@@ -101,7 +109,7 @@ namespace XPCT.Application.Services
             }
         }
 
-        public async Task<GetWalletExtractResult> GetWalletExtractAsync(Guid userId)
+        public async Task<GetWalletExtractResult> GetWalletExtractAsync(Guid userId, Guid? productId)
         {
             try
             {
@@ -113,12 +121,37 @@ namespace XPCT.Application.Services
                 if(user.Wallet == null)
                     return GetWalletExtractResult.WalletNotFound();
 
-                return GetWalletExtractResult.Success(user.Wallet.Investments);
+                var extract = _walletRepository.GetExtract(user.Wallet.Id, productId);
+                
+                if (extract == null)
+                    return GetWalletExtractResult.ErrorSearchingWalletExtract();
+
+                return GetWalletExtractResult.Success(extract);
             }
             catch (Exception ex)
             {
                 _logger.LogCritical($"CRITICAL ERROR AT: {ex.StackTrace} || Error Message: {ex.Message}.");
                 return GetWalletExtractResult.InternalError(ex.Message);
+            }
+        }
+        public async Task<GetWalletInvestmentsResult> GetWalletInvestmentsAsync(Guid userId)
+        {
+            try
+            {
+                var user = _userRepository.GetUserById(userId);
+
+                if (user == null)
+                    return GetWalletInvestmentsResult.UserNotFound();
+
+                if (user.Wallet == null)
+                    return GetWalletInvestmentsResult.WalletNotFound();
+
+                return GetWalletInvestmentsResult.Success(user.Wallet.Investments);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"CRITICAL ERROR AT: {ex.StackTrace} || Error Message: {ex.Message}.");
+                return GetWalletInvestmentsResult.InternalError(ex.Message);
             }
         }
 

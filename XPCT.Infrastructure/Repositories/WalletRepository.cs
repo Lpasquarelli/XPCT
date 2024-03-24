@@ -10,6 +10,7 @@ namespace XPCT.Infrastructure.Repositories
 {
     public class WalletRepository : IWalletRepository
     {
+        public List<Transaction> _Transactions = new();
         public List<Wallet> _Wallets = new();
 
         public Wallet GetWalletByIdAsync(Guid id)
@@ -48,6 +49,21 @@ namespace XPCT.Infrastructure.Repositories
                 wallet.Investments.Remove(getInvestment);
             
             return wallet;
+        }
+
+        public void CreateTransaction(Transaction transaction)
+        {
+            _Transactions.Add(transaction);
+        }
+
+        public IEnumerable<Transaction> GetExtract(Guid walletId, Guid? productId)
+        {
+            var completeWallet = _Transactions.Where(x => x.WalletId == walletId);
+
+            if(productId == null || productId == Guid.Empty)
+                return completeWallet;
+
+            return completeWallet.Where(x => x.Product.Id == productId);
         }
     }
 }

@@ -87,12 +87,12 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(WalletExtractResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> GetWalletExtract([FromRoute] Guid userId)
+        public async Task<IActionResult> GetWalletExtract([FromRoute] Guid userId, [FromQuery] Guid? productId)
         {
             var prefix = "xpct.wal.ext";
             try
             {
-                var result = await _walletService.GetWalletExtractAsync(userId);
+                var result = await _walletService.GetWalletExtractAsync(userId, productId);
 
                 if (result.Status == GetWalletExtractStatus.Success)
                 {
@@ -101,6 +101,34 @@ namespace XPCT.WebAPI.Controllers
                 }
 
                 _logger.LogError($"Error searching the extract || Error Message: {result.Message}.");
+                return BadRequest(new BadRequestResponse(result.Message, $"{prefix}.400"));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"CRITICAL ERROR AT: {ex.StackTrace} || Error Message: {ex.Message}.");
+                return BadRequest(new BadRequestResponse(ex, $"{prefix}.500"));
+            }
+        }
+
+        [HttpGet("{userId}")]
+        [SwaggerOperation(Summary = "Obter investimentos da carteira do usuário")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(WalletInvestmentsResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
+        public async Task<IActionResult> GetWalletInvestments([FromRoute] Guid userId)
+        {
+            var prefix = "xpct.wal.inv";
+            try
+            {
+                var result = await _walletService.GetWalletInvestmentsAsync(userId);
+
+                if (result.Status == GetWalletInvestmentsStatus.Success)
+                {
+                    _logger.LogInformation($"the investments was successfully consulted.");
+                    return Ok(new WalletInvestmentsResponse(result.Message, result.Investment!));
+                }
+
+                _logger.LogError($"Error searching the investments || Error Message: {result.Message}.");
                 return BadRequest(new BadRequestResponse(result.Message, $"{prefix}.400"));
             }
             catch (Exception ex)
