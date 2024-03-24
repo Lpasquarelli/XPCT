@@ -48,6 +48,31 @@ namespace XPCT.Application.Services
                 return GetProductsResult.InternalError(ex.Message);
             }
         }
+
+        public async Task<GetProductByIdResult> GetProductByIdAsync(Guid id)
+        {
+            try
+            {
+                _logger.LogInformation("Attempt to search the product");
+                var product = _productRepository.GetProductAsync(id);
+
+                if (product == null)
+                {
+                    _logger.LogError("an error occoured at serching the product");
+                    return GetProductByIdResult.ProductNotFound();
+                }
+
+                _logger.LogInformation("Attempt to search the product done successfuly.");
+                return GetProductByIdResult.Success(product);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"CRITICAL ERROR AT: {ex.StackTrace} || Error Message: {ex.Message}.");
+                return GetProductByIdResult.InternalError(ex.Message);
+            }
+        }
+
         public async Task<AddProductResult> AddProductAsync(string name, double price, bool active, int daysToDue)
         {
             try

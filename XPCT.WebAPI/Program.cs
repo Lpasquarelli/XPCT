@@ -16,9 +16,13 @@ builder.Services.AddTransient<IValidator<EnableProductRequest>, EnableProductReq
 
 // Services.
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IWalletService, WalletService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Repositories
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<IWalletRepository, WalletRepository>();
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

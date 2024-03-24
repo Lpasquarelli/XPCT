@@ -69,7 +69,7 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(ProductResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> AddProduct(AddProductRequest request)
+        public async Task<IActionResult> AddProduct([FromBody] AddProductRequest request)
         {
             var prefix = "xpct.prd.add";
             try
@@ -104,7 +104,7 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse), Description = "Bad Request")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> UpdateProduct(UpdateProductRequest request)
+        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductRequest request)
         {
             var prefix = "xpct.prd.upd";
             try
@@ -139,7 +139,7 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductIdentifyerResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse), Description = "Bad Request")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> EnableProduct(EnableProductRequest request)
+        public async Task<IActionResult> EnableProduct([FromBody] EnableProductRequest request)
         {
             var prefix = "xpct.prd.ena";
             try
@@ -175,7 +175,7 @@ namespace XPCT.WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductIdentifyerResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse), Description = "Bad Request")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> DisableProduct(Guid id)
+        public async Task<IActionResult> DisableProduct([FromRoute] Guid id)
         {
             var prefix = "xpct.prd.dis";
             try

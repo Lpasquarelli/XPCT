@@ -1,0 +1,53 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using XPCT.Domain.Entities;
+using XPCT.Domain.Repositories;
+
+namespace XPCT.Infrastructure.Repositories
+{
+    public class WalletRepository : IWalletRepository
+    {
+        public List<Wallet> _Wallets = new();
+
+        public Wallet GetWalletByIdAsync(Guid id)
+        {
+            return _Wallets.FirstOrDefault(x => x.Id == id);
+        }
+        public Wallet CreateWalletAsync(Wallet wallet)
+        {
+            _Wallets.Add(wallet);
+            return wallet;
+        }
+
+        public Wallet AddInvestmentToWallet(Guid WalletId, Investment investment)
+        {
+            var wallet = GetWalletByIdAsync(WalletId);
+
+            if(!wallet.Investments.Any(x => x.Product.Id == investment.Product.Id))
+                wallet.Investments.Add(investment);
+            else
+            {
+                var getInvestment = wallet.Investments.First(x => x.Product.Id == investment.Product.Id);
+                getInvestment.SumQuantity(investment.Quantity);
+            }
+
+            return wallet;
+        }
+
+        public Wallet SellInvestment(Guid walletId, Guid productId, double quantity)
+        {
+            var wallet = GetWalletByIdAsync(walletId);
+
+            var getInvestment = wallet.Investments.First(x => x.Product.Id == productId);
+            if (getInvestment.Quantity > quantity)
+                getInvestment.SubtractQuantity(quantity);
+            else if (getInvestment.Quantity == quantity)
+                wallet.Investments.Remove(getInvestment);
+            
+            return wallet;
+        }
+    }
+}
