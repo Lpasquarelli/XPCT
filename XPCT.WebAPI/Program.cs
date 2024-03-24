@@ -31,7 +31,7 @@ builder.Services.AddTransient<IValidator<GenerateUserTokenRequest>, GenerateUser
 builder.Services.AddTransient<IValidator<BuyInvestmentsRequest>, BuyInvestmentsRequestValidator>();
 builder.Services.AddTransient<IValidator<SellInvestmentsRequest>, SellInvestmentsRequestValidator>();
 
-// Services.
+// Services
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -62,10 +62,7 @@ builder.Services.AddAuthentication(x =>
 
 });
 
-
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     c =>
@@ -105,7 +102,6 @@ builder.Services.AddApiVersioning();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
