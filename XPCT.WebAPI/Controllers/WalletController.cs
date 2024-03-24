@@ -68,12 +68,40 @@ namespace XPCT.WebAPI.Controllers
                 if (result.Status == SellInvestmentStatus.Success)
                 {
                     _logger.LogInformation($"Product sold successfully.");
-                    return Ok(new WalletIdentifyerResponse(result.Wallet.Id, result.Message));
+                    return Ok(new WalletIdentifyerResponse(result.Wallet!.Id, result.Message));
                 }
 
                 _logger.LogError($"Error selling the product || Error Message: {result.Message}.");
                 return BadRequest(new BadRequestResponse(result.Message, $"{prefix}.400"));
 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"CRITICAL ERROR AT: {ex.StackTrace} || Error Message: {ex.Message}.");
+                return BadRequest(new BadRequestResponse(ex, $"{prefix}.500"));
+            }
+        }
+
+        [HttpGet("extract/{userId}")]
+        [SwaggerOperation(Summary = "Obter extrato da carteira do usuário")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(WalletExtractResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
+        public async Task<IActionResult> GetWalletExtract([FromRoute] Guid userId)
+        {
+            var prefix = "xpct.wal.ext";
+            try
+            {
+                var result = await _walletService.GetWalletExtractAsync(userId);
+
+                if (result.Status == GetWalletExtractStatus.Success)
+                {
+                    _logger.LogInformation($"the extract was successfully consulted.");
+                    return Ok(new WalletExtractResponse(result.Message, result.Extract!));
+                }
+
+                _logger.LogError($"Error searching the extract || Error Message: {result.Message}.");
+                return BadRequest(new BadRequestResponse(result.Message, $"{prefix}.400"));
             }
             catch (Exception ex)
             {

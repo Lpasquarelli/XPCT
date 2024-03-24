@@ -11,5 +11,6 @@ namespace XPCT.Application.Interfaces
     {
         Task<BuyInvestmentResult> BuyInvestmentAsync(Guid userId, double quantity, Guid productId);
         Task<SellInvestmentResult> SellInvestmentAsync(Guid userId, double quantity, Guid productId);
+        Task<GetWalletExtractResult> GetWalletExtractAsync(Guid userId);
     }
 }

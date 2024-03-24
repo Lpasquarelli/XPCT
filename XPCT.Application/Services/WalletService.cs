@@ -65,7 +65,6 @@ namespace XPCT.Application.Services
                 return BuyInvestmentResult.InternalError(ex.Message);
             }
         }
-
         public async Task<SellInvestmentResult> SellInvestmentAsync(Guid userId, double quantity, Guid productId)
         {
             try
@@ -101,5 +100,27 @@ namespace XPCT.Application.Services
                 return SellInvestmentResult.InternalError(ex.Message);
             }
         }
+
+        public async Task<GetWalletExtractResult> GetWalletExtractAsync(Guid userId)
+        {
+            try
+            {
+                var user = _userRepository.GetUserById(userId);
+
+                if (user == null)
+                    return GetWalletExtractResult.UserNotFound();
+
+                if(user.Wallet == null)
+                    return GetWalletExtractResult.WalletNotFound();
+
+                return GetWalletExtractResult.Success(user.Wallet.Investments);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"CRITICAL ERROR AT: {ex.StackTrace} || Error Message: {ex.Message}.");
+                return GetWalletExtractResult.InternalError(ex.Message);
+            }
+        }
+
     }
 }
