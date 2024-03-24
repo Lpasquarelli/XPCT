@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using XPCT.Application.DTO.Response;
@@ -36,9 +37,12 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Obtém a lista de produtos ativos ")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductResponse>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
         public async Task<IActionResult> GetProducts()
         {
@@ -65,9 +69,12 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Cadastra um novo produto")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(ProductResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
         public async Task<IActionResult> AddProduct([FromBody] AddProductRequest request)
         {
@@ -100,9 +107,12 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Edita um produto")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse), Description = "Bad Request")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
         public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductRequest request)
         {
@@ -135,9 +145,12 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpPost("enable")]
+        [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Ativa um produto")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductIdentifyerResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse), Description = "Bad Request")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
         public async Task<IActionResult> EnableProduct([FromBody] EnableProductRequest request)
         {
@@ -171,9 +184,12 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Desativa um produto")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductIdentifyerResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse), Description = "Bad Request")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
         public async Task<IActionResult> DisableProduct([FromRoute] Guid id)
         {

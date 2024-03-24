@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using XPCT.Application.DTO.Response;
 using XPCT.Application.Interfaces;
@@ -25,9 +26,12 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpPost("buy")]
+        [Authorize(Roles = "CUSTOMER")]
         [SwaggerOperation(Summary = "Compra de Investimento")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(WalletIdentifyerResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
         public async Task<IActionResult> BuyInvestments([FromBody] BuyInvestmentsRequest request)
         {
@@ -54,9 +58,12 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpPost("sell")]
+        [Authorize(Roles = "CUSTOMER")]
         [SwaggerOperation(Summary = "Venda de Investimento")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(WalletIdentifyerResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
         public async Task<IActionResult> SellInvestments([FromBody] SellInvestmentsRequest request)
         {
@@ -83,9 +90,12 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpGet("extract/{userId}")]
+        [Authorize(Roles = "CUSTOMER")]
         [SwaggerOperation(Summary = "Obter extrato da carteira do usuário")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(WalletExtractResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
         public async Task<IActionResult> GetWalletExtract([FromRoute] Guid userId, [FromQuery] Guid? productId)
         {
@@ -111,9 +121,12 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpGet("{userId}")]
+        [Authorize(Roles = "CUSTOMER")]
         [SwaggerOperation(Summary = "Obter investimentos da carteira do usuário")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(WalletInvestmentsResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
         public async Task<IActionResult> GetWalletInvestments([FromRoute] Guid userId)
         {

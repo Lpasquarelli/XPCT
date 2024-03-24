@@ -1,7 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using XPCT.Application.Interfaces;
@@ -17,14 +21,16 @@ namespace XPCT.Application.Services
         private readonly ILogger<UserService> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IWalletRepository _walletRepository;
+        private readonly IConfiguration _config;
         public UserService(ILogger<UserService> logger,
             IUserRepository userRepository,
-            IWalletRepository walletRepository)
+            IWalletRepository walletRepository,
+            IConfiguration config)
         {
             _logger = logger;
             _userRepository = userRepository;
             _walletRepository = walletRepository;
-
+            _config = config;
         }
 
         public async Task<AddUserResult> AddUser(string nome, string email, bool operador)
@@ -76,5 +82,52 @@ namespace XPCT.Application.Services
                 return AddUserResult.InternalError(ex.Message);
             }
         }
+
+        public async Task<UserTokenResult> GenerateUserTokenAsync(Guid userId)
+        {
+            try
+            {
+                var user = _userRepository.GetUserById(userId);
+
+                if (user == null)
+                    return UserTokenResult.UserNotFound();
+
+                var dueDate = DateTime.UtcNow.AddMinutes(30);
+                var token = GenerateToken(user, dueDate);
+
+                if (string.IsNullOrEmpty(token))
+                    return UserTokenResult.ErrorGeneratingUserToken();
+
+                return UserTokenResult.Success(token, dueDate);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"CRITICAL ERROR AT: {ex.StackTrace} || Error Message: {ex.Message}.");
+                return UserTokenResult.InternalError(ex.Message);
+            }
+        }
+
+        private string GenerateToken(User user, DateTime dueDate)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_config.GetSection("JWT:Key").Value!);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim("id", user.Id.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email.ToString()),
+                    new Claim(ClaimTypes.Role, user.Operator ? "OPERATOR" : "CUSTOMER"),
+                }),
+                Expires = dueDate,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+
+        }
+
     }
 }
