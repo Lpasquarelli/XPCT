@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using XPCT.Application.DTO.Response;
 using XPCT.Application.Interfaces;
 using XPCT.Application.Results.Products;
 using XPCT.Application.Results.Wallet;
+using XPCT.WebAPI.Models.Request.Product;
 using XPCT.WebAPI.Models.Request.Wallet;
 using XPCT.WebAPI.Models.Response;
+using XPCT.WebAPI.Validators;
 
 namespace XPCT.WebAPI.Controllers
 {
@@ -18,11 +21,19 @@ namespace XPCT.WebAPI.Controllers
     {
         private readonly ILogger<WalletController> _logger;
         private readonly IWalletService _walletService;
+        private readonly IValidator<BuyInvestmentsRequest> _buyInvestmentsRequestValidator;
+        private readonly IValidator<SellInvestmentsRequest> _sellInvestmentsRequestValidator;
+
         public WalletController(ILogger<WalletController> logger,
-            IWalletService walletService)
+            IWalletService walletService,
+            IValidator<BuyInvestmentsRequest> buyInvestmentsRequestValidator,
+            IValidator<SellInvestmentsRequest> sellInvestmentsRequestValidator)
         {
             _logger = logger;
             _walletService = walletService;
+            _buyInvestmentsRequestValidator = buyInvestmentsRequestValidator;
+            _sellInvestmentsRequestValidator = sellInvestmentsRequestValidator;
+
         }
 
         [HttpPost("buy")]
@@ -38,6 +49,12 @@ namespace XPCT.WebAPI.Controllers
             var prefix = "xpct.wal.buy";
             try
             {
+                _logger.LogInformation($"Attempt to validate the informed parameters.");
+                var dataValidate = _buyInvestmentsRequestValidator.Validate(request);
+
+                if (!dataValidate.IsValid)
+                    return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
+
                 var result = await _walletService.BuyInvestmentAsync(request.UserId, request.Quantity, request.ProductId);
 
                 if (result.Status == BuyInvestmentStatus.Success)
@@ -70,6 +87,12 @@ namespace XPCT.WebAPI.Controllers
             var prefix = "xpct.wal.sell";
             try
             {
+                _logger.LogInformation($"Attempt to validate the informed parameters.");
+                var dataValidate = _sellInvestmentsRequestValidator.Validate(request);
+
+                if (!dataValidate.IsValid)
+                    return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
+
                 var result = await _walletService.SellInvestmentAsync(request.UserId, request.Quantity, request.ProductId);
 
                 if (result.Status == SellInvestmentStatus.Success)

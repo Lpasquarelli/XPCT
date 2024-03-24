@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using XPCT.Application.Interfaces;
 using XPCT.Application.Results.User;
@@ -7,6 +8,9 @@ using XPCT.Application.Services;
 using XPCT.WebAPI.Models.Request.User;
 using XPCT.WebAPI.Models.Request.Wallet;
 using XPCT.WebAPI.Models.Response;
+using XPCT.WebAPI.Validators.Product;
+using XPCT.WebAPI.Validators;
+using XPCT.WebAPI.Validators.User;
 
 namespace XPCT.WebAPI.Controllers
 {
@@ -18,11 +22,18 @@ namespace XPCT.WebAPI.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
+        private readonly IValidator<AddUserRequest> _addUserRequestValidator;
+        private readonly IValidator<GenerateUserTokenRequest> _generateuserTokenRequestValidator;
+
         public UserController(ILogger<UserController> logger,
-            IUserService userService)
+            IUserService userService,
+            IValidator<AddUserRequest> addUserRequestValidator,
+            IValidator<GenerateUserTokenRequest> generateuserTokenRequestValidator)
         {
             _logger = logger;
             _userService = userService;
+            _addUserRequestValidator = addUserRequestValidator;
+            _generateuserTokenRequestValidator = generateuserTokenRequestValidator;
         }
 
         [HttpPost]
@@ -35,6 +46,13 @@ namespace XPCT.WebAPI.Controllers
             var prefix = "xpct.user.add";
             try
             {
+
+                _logger.LogInformation($"Attempt to validate the informed parameters.");
+                var dataValidate = _addUserRequestValidator.Validate(request);
+
+                if (!dataValidate.IsValid)
+                    return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
+
                 var result = await _userService.AddUser(request.Nome, request.Email, request.Operador);
 
                 if (result.Status == AddUserStatus.Success)
@@ -64,6 +82,12 @@ namespace XPCT.WebAPI.Controllers
             var prefix = "xpct.user.add";
             try
             {
+                _logger.LogInformation($"Attempt to validate the informed parameters.");
+                var dataValidate = _generateuserTokenRequestValidator.Validate(request);
+
+                if (!dataValidate.IsValid)
+                    return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
+
                 var result = await _userService.GenerateUserTokenAsync(request.userId);
 
                 if (result.Status == UserTokenStatus.Success)

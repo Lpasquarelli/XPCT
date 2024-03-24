@@ -11,15 +11,25 @@ using XPCT.Application.Services;
 using XPCT.Domain.Repositories;
 using XPCT.Infrastructure.Repositories;
 using XPCT.WebAPI.Models.Request.Product;
+using XPCT.WebAPI.Models.Request.User;
+using XPCT.WebAPI.Models.Request.Wallet;
 using XPCT.WebAPI.Validators.Product;
+using XPCT.WebAPI.Validators.User;
+using XPCT.WebAPI.Validators.Wallet;
 using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Validations
+//Product Validations
 builder.Services.AddTransient<IValidator<AddProductRequest>, AddProductRequestValidator>();
 builder.Services.AddTransient<IValidator<UpdateProductRequest>, UpdateProductRequestValidator>();
 builder.Services.AddTransient<IValidator<EnableProductRequest>, EnableProductRequestValidator>();
+//User Validations
+builder.Services.AddTransient<IValidator<AddUserRequest>, AddUserRequestValidator>();
+builder.Services.AddTransient<IValidator<GenerateUserTokenRequest>, GenerateUserTokenRequestValidator>();
+//Walllet Validations
+builder.Services.AddTransient<IValidator<BuyInvestmentsRequest>, BuyInvestmentsRequestValidator>();
+builder.Services.AddTransient<IValidator<SellInvestmentsRequest>, SellInvestmentsRequestValidator>();
 
 // Services.
 builder.Services.AddScoped<IProductService, ProductService>();
