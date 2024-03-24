@@ -28,7 +28,7 @@ namespace XPCT.Test.Services
 
 
         [Fact]
-        public void GetProductAsync_InvalidInput_ReturnsErrorResult()
+        public void GetProductAsync_ValidInput_ReturnsSuccess()
         {
             // Arrange
             var productService = new ProductService(_loggerMock.Object, _productRepositoryMock.Object);
