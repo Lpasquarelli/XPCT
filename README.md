@@ -69,6 +69,10 @@ A documentação detalhada da API pode ser encontrada em 'https://localhost:7214
 
 Existem dois tipos de Role para o usuário "OPERATOR" e "CUSTOMER", onde são definidos na criação do usuário (caso a flag Operator seja marcada como true, ele será um usuário operador) segregando a responsábilidade de apenas usuários Operadores conseguirem Criar, Alterar, Ativar e Invativar Produtos de Investimento e somente clientes poderem consultar extratos, e produtos do seu portfólio, comprar e vender.
 
+
+![Authorization Schema](https://github.com/Lpasquarelli/XPCT/assets/48439632/958a912e-8154-43bc-afd1-237c36ec8118)
+
+
 ## Parametros
 
 - Para Autenticação, foram deixados 2 Endpoints para autenticação: 1 Endpoint para criação de usuários e 1 Endpoint para Gerar o token JWT de autenticação.
