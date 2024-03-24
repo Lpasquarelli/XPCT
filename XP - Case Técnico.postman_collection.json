@@ -1,0 +1,535 @@
+{
+	"info": {
+		"_postman_id": "5e0f2971-3f91-4626-aa24-a0d6e31cee40",
+		"name": "XP - Case Técnico",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11386515"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Leonardo\",\r\n  \"email\": \"leonardo2.pasquarellif@gmail.com\",\r\n  \"operador\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/user",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GenerateToken Operator",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = JSON.parse(responseBody);\r",
+									"const token = responseJson.token;\r",
+									"// Define a variável \"token\" no ambiente do Postman\r",
+									"pm.environment.set('TOKEN-O', token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"8ab31026-f2da-4ddc-af1a-8054ab799dc3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/user/GenerateToken",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"GenerateToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GenerateToken Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = JSON.parse(responseBody);\r",
+									"const token = responseJson.token;\r",
+									"// Define a variável \"token\" no ambiente do Postman\r",
+									"pm.environment.set('TOKEN-C', token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"da923ae6-3681-401e-b7ae-314022822ecf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/user/GenerateToken",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"GenerateToken"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get Active Products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN-O}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/product",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN-O}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"FUNDO VCTO 1\",\r\n  \"price\": 10,\r\n  \"active\": true,\r\n  \"daysToDue\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/product",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN-O}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n  \"name\": \"FUNDO 1\",\r\n  \"price\": 40,\r\n  \"daysToDue\": 356\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/product",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enable Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN-O}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/product",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enable Product Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN-O}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/product/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wallet",
+			"item": [
+				{
+					"name": "Get Wallet Extract",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN-C}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/wallet/extract/2e77104a-446b-4ee0-b28d-bfc9491f81e6",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"extract",
+								"2e77104a-446b-4ee0-b28d-bfc9491f81e6"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "866c7e07-b83f-49a2-8b6f-ddc7987fe5c4",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Wallet Products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN-C}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/wallet/2e77104a-446b-4ee0-b28d-bfc9491f81e6",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"2e77104a-446b-4ee0-b28d-bfc9491f81e6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN-C}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"2e77104a-446b-4ee0-b28d-bfc9491f81e6\",\r\n  \"quantity\": 10,\r\n  \"productId\": \"961ac764-c1f6-4641-84fe-2801b34eae0a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/wallet/buy",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"buy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sell Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN-C}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"a6ebd468-a16c-4346-8010-b2df5c6fc6d0\",\r\n  \"quantity\": 5,\r\n  \"productId\": \"866c7e07-b83f-49a2-8b6f-ddc7987fe5c4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7214/api/v1/wallet/sell",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7214",
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"sell"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
