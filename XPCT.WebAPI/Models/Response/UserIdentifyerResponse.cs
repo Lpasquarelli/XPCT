@@ -2,14 +2,14 @@
 
 namespace XPCT.WebAPI.Models.Response
 {
-    public class ProductIdentifyerResponse
+    public class UserIdentifyerResponse
     {
-        [SwaggerSchema(Description = "Código do Produto")]
+        [SwaggerSchema(Description = "Código do Usuário")]
         public Guid Id { get; set; }
         [SwaggerSchema(Description = "Mensagem de retorno")]
         public string Message { get; set; }
 
-        public ProductIdentifyerResponse(Guid id, string message)
+        public UserIdentifyerResponse(Guid id, string message)
         {
             Id = id;
             Message = message;

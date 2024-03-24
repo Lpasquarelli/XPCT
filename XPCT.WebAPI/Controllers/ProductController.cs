@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using XPCT.Application.DTO.Response;
@@ -36,16 +37,19 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Obtém a lista de produtos ativos ")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductResponse>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> GetProducts()
+        public IActionResult GetProducts()
         {
             var prefix = "xpct.prd.gp";
             try
             {
-                var result = await _productService.GetProductsAsync();
+                var result = _productService.GetProducts();
 
                 if(result.Status == GetProductsStatus.Success)
                 {
@@ -65,11 +69,14 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Cadastra um novo produto")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(ProductResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> AddProduct(AddProductRequest request)
+        public IActionResult AddProduct([FromBody] AddProductRequest request)
         {
             var prefix = "xpct.prd.add";
             try
@@ -80,7 +87,7 @@ namespace XPCT.WebAPI.Controllers
                 if (!dataValidate.IsValid)
                     return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
 
-                var result = await _productService.AddProductAsync(request.Name, request.Price, request.Active, request.DaysToDue);
+                var result = _productService.AddProduct(request.Name, request.Price, request.Active, request.DaysToDue);
 
                 if (result.Status == AddProductStatus.Success)
                 {
@@ -100,11 +107,14 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Edita um produto")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse), Description = "Bad Request")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> UpdateProduct(UpdateProductRequest request)
+        public IActionResult UpdateProduct([FromBody] UpdateProductRequest request)
         {
             var prefix = "xpct.prd.upd";
             try
@@ -115,7 +125,7 @@ namespace XPCT.WebAPI.Controllers
                 if (!dataValidate.IsValid)
                     return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
 
-                var result = await _productService.UpdateProductAsync(request.Id, request.Name, request.Price, request.DaysToDue);
+                var result = _productService.UpdateProduct(request.Id, request.Name, request.Price, request.DaysToDue);
 
                 if (result.Status == UpdateProductStatus.Success)
                 {
@@ -135,11 +145,14 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpPost("enable")]
+        [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Ativa um produto")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductIdentifyerResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse), Description = "Bad Request")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> EnableProduct(EnableProductRequest request)
+        public IActionResult EnableProduct([FromBody] EnableProductRequest request)
         {
             var prefix = "xpct.prd.ena";
             try
@@ -150,7 +163,7 @@ namespace XPCT.WebAPI.Controllers
                 if (!dataValidate.IsValid)
                     return BadRequest(new BadValidationResponse(dataValidate.Errors.ToCustomValidationFailure(), prefix));
 
-                var result = await _productService.EnableProductAsync(request.Id);
+                var result = _productService.EnableProduct(request.Id);
 
                 if (result.Status == EnableProductStatus.Success ||
                     result.Status == EnableProductStatus.ProductAlreadyEnabled)
@@ -171,11 +184,14 @@ namespace XPCT.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Desativa um produto")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductIdentifyerResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse), Description = "Bad Request")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(BadRequestResponse))]
-        public async Task<IActionResult> DisableProduct(Guid id)
+        public IActionResult DisableProduct([FromRoute] Guid id)
         {
             var prefix = "xpct.prd.dis";
             try
@@ -184,7 +200,7 @@ namespace XPCT.WebAPI.Controllers
                 if (id == Guid.Empty)
                     return BadRequest(new BadValidationResponse(new CustomValidationFailure("o Código do produto precisa ser informado","Id"), prefix));
                 
-                var result = await _productService.DisableProductAsync(id);
+                var result = _productService.DisableProduct(id);
 
                 if (result.Status == DisableProductStatus.Success ||
                     result.Status == DisableProductStatus.ProductAlreadyDisabled)

@@ -10,10 +10,11 @@ namespace XPCT.Application.Interfaces
 {
     public interface IProductService
     {
-        Task<GetProductsResult> GetProductsAsync();
-        Task<AddProductResult> AddProductAsync(string name, double price, bool active, int daysToDue);
-        Task<UpdateProductResult> UpdateProductAsync(Guid id, string name, double price, int daysToDue);
-        Task<EnableProductResult> EnableProductAsync(Guid id);
-        Task<DisableProductResult> DisableProductAsync(Guid id);
+        GetProductsResult GetProducts();
+        GetProductByIdResult GetProductById(Guid id);
+        AddProductResult AddProduct(string name, double price, bool active, int daysToDue);
+        UpdateProductResult UpdateProduct(Guid id, string name, double price, int daysToDue);
+        EnableProductResult EnableProduct(Guid id);
+        DisableProductResult DisableProduct(Guid id);
     }
 }

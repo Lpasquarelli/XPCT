@@ -25,12 +25,12 @@ namespace XPCT.Application.Services
             _productRepository = productRepository;
         }
 
-        public async Task<GetProductsResult> GetProductsAsync()
+        public GetProductsResult GetProducts()
         {
             try
             {
                 _logger.LogInformation("Attempt to search the active products");
-                var products = _productRepository.GetProductsAsync();
+                var products = _productRepository.GetProducts();
 
                 if (products == null)
                 {
@@ -48,7 +48,32 @@ namespace XPCT.Application.Services
                 return GetProductsResult.InternalError(ex.Message);
             }
         }
-        public async Task<AddProductResult> AddProductAsync(string name, double price, bool active, int daysToDue)
+
+        public GetProductByIdResult GetProductById(Guid id)
+        {
+            try
+            {
+                _logger.LogInformation("Attempt to search the product");
+                var product = _productRepository.GetProduct(id);
+
+                if (product == null)
+                {
+                    _logger.LogError("an error occoured at serching the product");
+                    return GetProductByIdResult.ProductNotFound();
+                }
+
+                _logger.LogInformation("Attempt to search the product done successfuly.");
+                return GetProductByIdResult.Success(product);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"CRITICAL ERROR AT: {ex.StackTrace} || Error Message: {ex.Message}.");
+                return GetProductByIdResult.InternalError(ex.Message);
+            }
+        }
+
+        public AddProductResult AddProduct(string name, double price, bool active, int daysToDue)
         {
             try
             {
@@ -56,7 +81,7 @@ namespace XPCT.Application.Services
 
                 var product = new Product(name, price, active, daysToDue);
 
-                var addProduct = _productRepository.AddProductAsync(product);
+                var addProduct = _productRepository.AddProduct(product);
 
                 if (addProduct == null)
                 {
@@ -74,13 +99,13 @@ namespace XPCT.Application.Services
                 return AddProductResult.InternalError(ex.Message);
             }
         }
-        public async Task<UpdateProductResult> UpdateProductAsync(Guid id, string name, double price, int daysToDue)
+        public UpdateProductResult UpdateProduct(Guid id, string name, double price, int daysToDue)
         {
             try
             {
                 _logger.LogInformation("Attempt to register the product");
 
-                var getProductById = _productRepository.GetProductAsync(id);
+                var getProductById = _productRepository.GetProduct(id);
 
                 if (getProductById == null)
                 {
@@ -92,7 +117,7 @@ namespace XPCT.Application.Services
 
                 getProductById.Update(product);
 
-                var updateProduct = _productRepository.UpdateProductAsync(getProductById);
+                var updateProduct = _productRepository.UpdateProduct(getProductById);
 
                 if(updateProduct == null)
                 {
@@ -111,13 +136,13 @@ namespace XPCT.Application.Services
             }
         }
 
-        public async Task<EnableProductResult> EnableProductAsync(Guid id)
+        public EnableProductResult EnableProduct(Guid id)
         {
             try
             {
                 _logger.LogInformation("Attempt to enable the product");
 
-                var getProductById = _productRepository.GetProductAsync(id);
+                var getProductById = _productRepository.GetProduct(id);
 
                 if (getProductById == null)
                 {
@@ -128,7 +153,7 @@ namespace XPCT.Application.Services
                 if (getProductById.Active)
                     return EnableProductResult.ProductAlreadyEnabled(id);
 
-                var updateProduct = _productRepository.ActivateProductAsync(id);
+                var updateProduct = _productRepository.ActivateProduct(id);
 
                 if (updateProduct == null)
                 {
@@ -147,13 +172,13 @@ namespace XPCT.Application.Services
             }
         }
 
-        public async Task<DisableProductResult> DisableProductAsync(Guid id)
+        public DisableProductResult DisableProduct(Guid id)
         {
             try
             {
                 _logger.LogInformation("Attempt to disable the product");
 
-                var getProductById = _productRepository.GetProductAsync(id);
+                var getProductById = _productRepository.GetProduct(id);
 
                 if (getProductById == null)
                 {
@@ -164,7 +189,7 @@ namespace XPCT.Application.Services
                 if (!getProductById.Active)
                     return DisableProductResult.ProductAlreadyDisabled(id);
 
-                var updateProduct = _productRepository.DeactivateProductAsync(id);
+                var updateProduct = _productRepository.DeactivateProduct(id);
 
                 if (updateProduct == null)
                 {

@@ -9,11 +9,11 @@ namespace XPCT.Domain.Repositories
 {
     public interface IProductRepository
     {
-        Product GetProductAsync(Guid id);
-        IEnumerable<Product> GetProductsAsync();
-        Product AddProductAsync(Product product);
-        Product UpdateProductAsync(Product product);
-        Product ActivateProductAsync(Guid id);
-        Product DeactivateProductAsync(Guid id);
+        Product GetProduct(Guid id);
+        IEnumerable<Product> GetProducts();
+        Product AddProduct(Product product);
+        Product UpdateProduct(Product product);
+        Product ActivateProduct(Guid id);
+        Product DeactivateProduct(Guid id);
     }
 }
