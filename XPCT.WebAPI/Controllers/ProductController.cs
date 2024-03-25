@@ -11,6 +11,9 @@ using XPCT.WebAPI.Validators;
 
 namespace XPCT.WebAPI.Controllers
 {
+    /// <summary>
+    /// Classe controlladora de Produto
+    /// </summary>
     [ApiController]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -22,6 +25,15 @@ namespace XPCT.WebAPI.Controllers
         private readonly IValidator<AddProductRequest> _addProductRequestValidator;
         private readonly IValidator<UpdateProductRequest> _updateProductRequestValidator;
         private readonly IValidator<EnableProductRequest> _enableProductRequestValidator;
+
+        /// <summary>
+        /// Instancia um <see cref="ProductController"/>
+        /// </summary>
+        /// <param name="logger"><see cref="ILogger{ProductController}"/></param>
+        /// <param name="productService"><see cref="IProductService"/></param>
+        /// <param name="addProductRequestValidator"><see cref="IValidator{T}"/> de <see cref="AddProductRequest"/></param>
+        /// <param name="updateProductRequestValidator"><see cref="IValidator{T}"/> de <see cref="UpdateProductRequest"/></param>
+        /// <param name="enableProductRequestValidator"><see cref="IValidator{T}"/> de <see cref="EnableProductRequest"/></param>
         public ProductController(ILogger<ProductController> logger,
             IProductService productService,
             IValidator<AddProductRequest> addProductRequestValidator,
@@ -36,6 +48,10 @@ namespace XPCT.WebAPI.Controllers
             _enableProductRequestValidator = enableProductRequestValidator;
         }
 
+        /// <summary>
+        /// Obter produtos
+        /// </summary>
+        /// <returns><see cref="IEnumerable{T}"/> de <see cref="ProductResponse"/></returns>
         [HttpGet]
         [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Obtém a lista de produtos ativos ")]
@@ -68,6 +84,11 @@ namespace XPCT.WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Cadastrar Produto
+        /// </summary>
+        /// <param name="request"><see cref="AddProductRequest"/></param>
+        /// <returns><see cref="ProductResponse"/></returns>
         [HttpPost]
         [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Cadastra um novo produto")]
@@ -106,6 +127,11 @@ namespace XPCT.WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Editar Produto
+        /// </summary>
+        /// <param name="request"><see cref="UpdateProductRequest"/></param>
+        /// <returns><see cref="ProductResponse"/></returns>
         [HttpPut]
         [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Edita um produto")]
@@ -144,6 +170,11 @@ namespace XPCT.WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Ativa produto
+        /// </summary>
+        /// <param name="request"><see cref="EnableProductRequest"/></param>
+        /// <returns><see cref="ProductIdentifyerResponse"/></returns>
         [HttpPost("enable")]
         [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Ativa um produto")]
@@ -183,6 +214,11 @@ namespace XPCT.WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Inativa produto
+        /// </summary>
+        /// <param name="id">código do Produto</param>
+        /// <returns><see cref="ProductIdentifyerResponse"/></returns>
         [HttpDelete("{id}")]
         [Authorize(Roles = "OPERATOR")]
         [SwaggerOperation(Summary = "Desativa um produto")]

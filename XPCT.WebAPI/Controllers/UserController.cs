@@ -14,6 +14,9 @@ using XPCT.WebAPI.Validators.User;
 
 namespace XPCT.WebAPI.Controllers
 {
+    /// <summary>
+    /// Classe Controladora de Usuario
+    /// </summary>
     [ApiController]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -25,6 +28,13 @@ namespace XPCT.WebAPI.Controllers
         private readonly IValidator<AddUserRequest> _addUserRequestValidator;
         private readonly IValidator<GenerateUserTokenRequest> _generateuserTokenRequestValidator;
 
+        /// <summary>
+        /// Instancia um <see cref="UserController"/>
+        /// </summary>
+        /// <param name="logger"><see cref="ILogger{UserController}"/></param>
+        /// <param name="userService"><see cref="IUserService"/></param>
+        /// <param name="addUserRequestValidator"><see cref="IValidator{T}"/> de <see cref="AddUserRequest"/></param>
+        /// <param name="generateuserTokenRequestValidator"><see cref="IValidator{T}"/> de <see cref="GenerateUserTokenRequest"/></param>
         public UserController(ILogger<UserController> logger,
             IUserService userService,
             IValidator<AddUserRequest> addUserRequestValidator,
@@ -36,6 +46,11 @@ namespace XPCT.WebAPI.Controllers
             _generateuserTokenRequestValidator = generateuserTokenRequestValidator;
         }
 
+        /// <summary>
+        /// Cadastra Usuario
+        /// </summary>
+        /// <param name="request"><see cref="AddUserRequest"/></param>
+        /// <returns><see cref="UserIdentifyerResponse"/></returns>
         [HttpPost]
         [SwaggerOperation(Summary = "Cadastra Usuario")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(UserIdentifyerResponse))]
@@ -72,6 +87,11 @@ namespace XPCT.WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Gera token de acesso
+        /// </summary>
+        /// <param name="request"><see cref="GenerateUserTokenRequest"/></param>
+        /// <returns><see cref="UserTokenResponse"/></returns>
         [HttpPost("GenerateToken")]
         [SwaggerOperation(Summary = "Gera um token para o usuário acessar o contexto definido para o mesmo na hora da criação (Operador/Cliente)")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(UserTokenResponse))]

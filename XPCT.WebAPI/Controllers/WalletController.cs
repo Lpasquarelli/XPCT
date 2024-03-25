@@ -13,6 +13,9 @@ using XPCT.WebAPI.Validators;
 
 namespace XPCT.WebAPI.Controllers
 {
+    /// <summary>
+    /// Classe Controladora de Carteira
+    /// </summary>
     [ApiController]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -24,6 +27,13 @@ namespace XPCT.WebAPI.Controllers
         private readonly IValidator<BuyInvestmentsRequest> _buyInvestmentsRequestValidator;
         private readonly IValidator<SellInvestmentsRequest> _sellInvestmentsRequestValidator;
 
+        /// <summary>
+        /// Instancia um <see cref="WalletController"/>
+        /// </summary>
+        /// <param name="logger"><see cref="ILogger{WalletController}"/></param>
+        /// <param name="walletService"><see cref="IWalletService"/></param>
+        /// <param name="buyInvestmentsRequestValidator"><see cref="IValidator{T}"/> de <see cref="BuyInvestmentsRequest"/></param>
+        /// <param name="sellInvestmentsRequestValidator"><see cref="IValidator{T}"/> de <see cref="SellInvestmentsRequest"/></param>
         public WalletController(ILogger<WalletController> logger,
             IWalletService walletService,
             IValidator<BuyInvestmentsRequest> buyInvestmentsRequestValidator,
@@ -36,6 +46,11 @@ namespace XPCT.WebAPI.Controllers
 
         }
 
+        /// <summary>
+        /// Compra investimento
+        /// </summary>
+        /// <param name="request"><see cref="BuyInvestmentsRequest"/></param>
+        /// <returns><see cref="WalletIdentifyerResponse"/></returns>
         [HttpPost("buy")]
         [Authorize(Roles = "CUSTOMER")]
         [SwaggerOperation(Summary = "Compra de Investimento")]
@@ -74,6 +89,11 @@ namespace XPCT.WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Vende investimento
+        /// </summary>
+        /// <param name="request"><see cref="SellInvestmentsRequest"/></param>
+        /// <returns><see cref="WalletIdentifyerResponse"/></returns>
         [HttpPost("sell")]
         [Authorize(Roles = "CUSTOMER")]
         [SwaggerOperation(Summary = "Venda de Investimento")]
@@ -112,6 +132,12 @@ namespace XPCT.WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtem Extrato
+        /// </summary>
+        /// <param name="userId">código do usuário</param>
+        /// <param name="productId">código do produto</param>
+        /// <returns><see cref="WalletExtractResponse"/></returns>
         [HttpGet("extract/{userId}")]
         [Authorize(Roles = "CUSTOMER")]
         [SwaggerOperation(Summary = "Obter extrato da carteira do usuário")]
@@ -143,6 +169,11 @@ namespace XPCT.WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Obter Investimentos da carteira
+        /// </summary>
+        /// <param name="userId">código do usuario</param>
+        /// <returns><see cref="WalletInvestmentsResponse"/></returns>
         [HttpGet("{userId}")]
         [Authorize(Roles = "CUSTOMER")]
         [SwaggerOperation(Summary = "Obter investimentos da carteira do usuário")]

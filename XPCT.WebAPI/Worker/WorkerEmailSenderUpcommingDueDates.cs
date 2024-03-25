@@ -6,11 +6,19 @@ using XPCT.WebAPI.Models.Response;
 
 namespace XPCT.WebAPI.Worker
 {
+    /// <summary>
+    /// Worker schedulado para envio de email para os clientes com investimentos com data de vencimento proximas
+    /// </summary>
     public class WorkerEmailSenderUpcommingDueDates : IJob
     {
         private readonly ILogger<WorkerEmailSenderUpcommingDueDates> _logger;
         private readonly IUserService _userService;
 
+        /// <summary>
+        /// Instancia um <see cref="WorkerEmailSenderUpcommingDueDates"/>
+        /// </summary>
+        /// <param name="logger"><see cref="ILogger{WorkerEmailSenderUpcommingDueDates}"/></param>
+        /// <param name="userService"><see cref="IUserService"/></param>
         public WorkerEmailSenderUpcommingDueDates(ILogger<WorkerEmailSenderUpcommingDueDates> logger,
             IUserService userService)
         {
@@ -18,6 +26,11 @@ namespace XPCT.WebAPI.Worker
             _userService = userService;
         }
 
+        /// <summary>
+        /// Executar
+        /// </summary>
+        /// <param name="context"><see cref="IJobExecutionContext"/></param>
+        /// <returns></returns>
         public async Task Execute(IJobExecutionContext context)
         {
             try
@@ -62,6 +75,11 @@ namespace XPCT.WebAPI.Worker
             return;
         }
 
+        /// <summary>
+        /// Reprocessa o job
+        /// </summary>
+        /// <param name="context"><see cref="IJobExecutionContext"/></param>
+        /// <returns></returns>
         private async Task ReScheduleJob(IJobExecutionContext context)
         {
             await Task.Delay(TimeSpan.FromMinutes(1));
@@ -69,6 +87,11 @@ namespace XPCT.WebAPI.Worker
             return;
         }
 
+        /// <summary>
+        /// Simula o envio do email
+        /// </summary>
+        /// <param name="user"><see cref="User"/></param>
+        /// <returns><see cref="bool"/></returns>
         private bool SendEmail(User user)
         {
             Console.WriteLine($"############################################################################");
@@ -78,6 +101,11 @@ namespace XPCT.WebAPI.Worker
             return true;
         }
 
+        /// <summary>
+        /// Obter o Text do body
+        /// </summary>
+        /// <param name="investments"><see cref="IEnumerable{T}"/> de <see cref="Investment"/></param>
+        /// <returns><see cref="string"/></returns>
         private string GetBodyText(IEnumerable<Investment> investments)
         {
             var text = "";
@@ -90,6 +118,11 @@ namespace XPCT.WebAPI.Worker
             return text;
         }
 
+        /// <summary>
+        /// Subtrai os dias da data de vencimento
+        /// </summary>
+        /// <param name="dueDate">data de vencimento</param>
+        /// <returns><see cref="int"/></returns>
         private int SubtractDaysToExpire(DateTime dueDate)
         {
             DateTime currentDate = DateTime.Now.Date;

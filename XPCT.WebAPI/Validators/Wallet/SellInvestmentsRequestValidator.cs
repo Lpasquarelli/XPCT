@@ -4,8 +4,14 @@ using XPCT.WebAPI.Models.Request.Wallet;
 
 namespace XPCT.WebAPI.Validators.Wallet
 {
+    /// <summary>
+    /// classe validadora de <see cref="SellInvestmentsRequest"/>
+    /// </summary>
     public class SellInvestmentsRequestValidator : AbstractValidator<SellInvestmentsRequest>
     {
+        /// <summary>
+        /// Regras de validação
+        /// </summary>
         public SellInvestmentsRequestValidator()
         {
             RuleFor(p => p.UserId).NotEmpty().WithMessage("O código do usuário é obrigatório");

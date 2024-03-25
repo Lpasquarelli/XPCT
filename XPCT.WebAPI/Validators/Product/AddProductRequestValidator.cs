@@ -3,8 +3,14 @@ using XPCT.WebAPI.Models.Request.Product;
 
 namespace XPCT.WebAPI.Validators.Product
 {
+    /// <summary>
+    /// Classe validadora de <see cref="AddProductRequest"/>
+    /// </summary>
     public class AddProductRequestValidator : AbstractValidator<AddProductRequest>
     {
+        /// <summary>
+        /// Regras de validação
+        /// </summary>
         public AddProductRequestValidator()
         {
             RuleFor(p => p.Name).NotEmpty().WithMessage("O nome do produto é obrigatório");
