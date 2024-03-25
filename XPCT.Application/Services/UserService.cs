@@ -17,12 +17,23 @@ using XPCT.Domain.Repositories;
 
 namespace XPCT.Application.Services
 {
+    /// <summary>
+    /// Classe de serviço de Usuário
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly ILogger<UserService> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IWalletRepository _walletRepository;
         private readonly IConfiguration _config;
+
+        /// <summary>
+        /// Instancia um <see cref="UserService"/>
+        /// </summary>
+        /// <param name="logger"><see cref="ILogger{UserService}"/></param>
+        /// <param name="userRepository"><see cref="IUserRepository"/></param>
+        /// <param name="walletRepository"><see cref="IWalletRepository"/></param>
+        /// <param name="config"><see cref="IConfiguration"/></param>
         public UserService(ILogger<UserService> logger,
             IUserRepository userRepository,
             IWalletRepository walletRepository,
@@ -34,6 +45,7 @@ namespace XPCT.Application.Services
             _config = config;
         }
 
+        /// <inheritdoc/>
         public AddUserResult AddUser(string nome, string email, bool operador)
         {
             try
@@ -84,6 +96,7 @@ namespace XPCT.Application.Services
             }
         }
 
+        /// <inheritdoc/>
         public UserTokenResult GenerateUserToken(Guid userId)
         {
             try
@@ -109,6 +122,7 @@ namespace XPCT.Application.Services
             }
         }
 
+        /// <inheritdoc/>
         public GetUserWalletsUpcommingDueDateResult GetUserWalletsUpcommingDueDate()
         {
             try
@@ -130,6 +144,12 @@ namespace XPCT.Application.Services
             }
         }
 
+        /// <summary>
+        /// Gerar token do usuário
+        /// </summary>
+        /// <param name="user"><see cref="User"/></param>
+        /// <param name="dueDate">data de expiração</param>
+        /// <returns><see cref="string"/></returns>
         private string GenerateToken(User user, DateTime dueDate)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

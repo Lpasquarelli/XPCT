@@ -14,10 +14,19 @@ using XPCT.Domain.Repositories;
 
 namespace XPCT.Application.Services
 {
+    /// <summary>
+    /// Classe de Serviço de Produto
+    /// </summary>
     public class ProductService : IProductService
     {
         private readonly ILogger<ProductService> _logger;
         private readonly IProductRepository _productRepository;
+
+        /// <summary>
+        /// Instancia um <see cref="ProductService"/>
+        /// </summary>
+        /// <param name="logger"><see cref="ILogger{ProductService}"/></param>
+        /// <param name="productRepository"><see cref="IProductRepository"/></param>
         public ProductService(ILogger<ProductService> logger,
             IProductRepository productRepository)
         {
@@ -25,6 +34,7 @@ namespace XPCT.Application.Services
             _productRepository = productRepository;
         }
 
+        /// <inheritdoc/>
         public GetProductsResult GetProducts()
         {
             try
@@ -49,6 +59,7 @@ namespace XPCT.Application.Services
             }
         }
 
+        /// <inheritdoc/>
         public GetProductByIdResult GetProductById(Guid id)
         {
             try
@@ -73,6 +84,7 @@ namespace XPCT.Application.Services
             }
         }
 
+        /// <inheritdoc/>
         public AddProductResult AddProduct(string name, double price, bool active, int daysToDue)
         {
             try
@@ -99,6 +111,8 @@ namespace XPCT.Application.Services
                 return AddProductResult.InternalError(ex.Message);
             }
         }
+
+        /// <inheritdoc/>
         public UpdateProductResult UpdateProduct(Guid id, string name, double price, int daysToDue)
         {
             try
@@ -136,6 +150,7 @@ namespace XPCT.Application.Services
             }
         }
 
+        /// <inheritdoc/>
         public EnableProductResult EnableProduct(Guid id)
         {
             try
@@ -172,6 +187,7 @@ namespace XPCT.Application.Services
             }
         }
 
+        /// <inheritdoc/>
         public DisableProductResult DisableProduct(Guid id)
         {
             try

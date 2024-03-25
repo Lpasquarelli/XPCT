@@ -9,18 +9,25 @@ using XPCT.Domain.Repositories;
 
 namespace XPCT.Infrastructure.Repositories
 {
+    /// <summary>
+    /// Repositorio de Usuario
+    /// </summary>
     public class UserRepository : IUserRepository
     {
         public List<User> Users = new();
 
+        /// <inheritdoc/>
         public User GetUserByEmail(string email) => Users.FirstOrDefault(x => x.Email.ToLower().Equals(email.ToLower()));
+        /// <inheritdoc/>
         public User GetUserById(Guid id) => Users.FirstOrDefault(x => x.Id == id);
+        /// <inheritdoc/>
         public User CreateUser(User user)
         {
             Users.Add(user);
             return user;
         }
 
+        /// <inheritdoc/>
         public bool CreateUserWallet(Guid id, Wallet wallet)
         {
             try
@@ -35,6 +42,7 @@ namespace XPCT.Infrastructure.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<User> GetUpCommingDueDatenvestmentsByUser()
         {
             var investmentsToExpire = 
@@ -66,6 +74,11 @@ namespace XPCT.Infrastructure.Repositories
             return result;
         }
 
+        /// <summary>
+        /// Subtrai dias da data de vencimento
+        /// </summary>
+        /// <param name="dueDate">data de vencimento</param>
+        /// <returns><see cref="int"/></returns>
         private int SubtractDaysToExpire(DateTime dueDate)
         {
             DateTime currentDate = DateTime.Now.Date;

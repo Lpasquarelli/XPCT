@@ -12,12 +12,23 @@ using XPCT.Domain.Repositories;
 
 namespace XPCT.Application.Services
 {
+    /// <summary>
+    /// Classe de serviço de Carteira
+    /// </summary>
     public class WalletService : IWalletService
     {
         private readonly ILogger<WalletService> _logger;
         private readonly IProductRepository _productRepository;
         private readonly IWalletRepository _walletRepository;
         private readonly IUserRepository _userRepository;
+
+        /// <summary>
+        /// Instancia um <see cref="WalletService"/>
+        /// </summary>
+        /// <param name="logger"><see cref="ILogger{WalletService}"/></param>
+        /// <param name="productRepository"><see cref="IProductRepository"/></param>
+        /// <param name="walletRepository"><see cref="IWalletRepository"/></param>
+        /// <param name="userRepository"><see cref="IUserRepository"/></param>
         public WalletService(ILogger<WalletService> logger,
             IProductRepository productRepository,
             IWalletRepository walletRepository,
@@ -30,6 +41,7 @@ namespace XPCT.Application.Services
 
         }
 
+        /// <inheritdoc/>
         public BuyInvestmentResult BuyInvestment(Guid userId, double quantity, Guid productId)
         {
             try
@@ -69,6 +81,8 @@ namespace XPCT.Application.Services
                 return BuyInvestmentResult.InternalError(ex.Message);
             }
         }
+
+        /// <inheritdoc/>
         public SellInvestmentResult SellInvestment(Guid userId, double quantity, Guid productId)
         {
             try
@@ -109,6 +123,7 @@ namespace XPCT.Application.Services
             }
         }
 
+        /// <inheritdoc/>
         public GetWalletExtractResult GetWalletExtract(Guid userId, Guid? productId)
         {
             try
@@ -134,6 +149,8 @@ namespace XPCT.Application.Services
                 return GetWalletExtractResult.InternalError(ex.Message);
             }
         }
+
+        /// <inheritdoc/>
         public GetWalletInvestmentsResult GetWalletInvestments(Guid userId)
         {
             try
