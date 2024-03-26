@@ -1,10 +1,8 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Diagnostics.Metrics;
-using System.Reflection.Metadata;
+using Quartz;
 using System.Text;
 using XPCT.Application.Interfaces;
 using XPCT.Application.Services;
@@ -16,7 +14,6 @@ using XPCT.WebAPI.Models.Request.Wallet;
 using XPCT.WebAPI.Validators.Product;
 using XPCT.WebAPI.Validators.User;
 using XPCT.WebAPI.Validators.Wallet;
-using Quartz;
 using XPCT.WebAPI.Worker;
 
 

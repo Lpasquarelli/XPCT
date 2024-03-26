@@ -1,11 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Formats.Asn1;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using XPCT.Application.DTO.Response;
 using XPCT.Application.Interfaces;
 using XPCT.Application.Results.Products;

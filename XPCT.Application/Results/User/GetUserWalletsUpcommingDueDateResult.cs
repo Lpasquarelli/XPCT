@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XPCT.Application.DTO.Response;
-
-
-namespace XPCT.Application.Results.User
+﻿namespace XPCT.Application.Results.User
 {
     /// <summary>
     /// Status de Obter investimentos com o vencimento proximo

@@ -3,7 +3,7 @@
 namespace XPCT.WebAPI.Validators
 {
     /// <summary>
-    /// Extenção de falha de validação da classe <see cref="ValidationFailure"/>
+    /// Extensão de falha de validação da classe <see cref="ValidationFailure"/>
     /// </summary>
     public static class ValidationFailureExtesions
     {

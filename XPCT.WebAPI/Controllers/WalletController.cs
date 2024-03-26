@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using XPCT.Application.DTO.Response;
 using XPCT.Application.Interfaces;
-using XPCT.Application.Results.Products;
 using XPCT.Application.Results.Wallet;
-using XPCT.WebAPI.Models.Request.Product;
 using XPCT.WebAPI.Models.Request.Wallet;
 using XPCT.WebAPI.Models.Response;
 using XPCT.WebAPI.Validators;

@@ -3,14 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using XPCT.Application.Interfaces;
 using XPCT.Application.Results.User;
-using XPCT.Application.Results.Wallet;
-using XPCT.Application.Services;
 using XPCT.WebAPI.Models.Request.User;
-using XPCT.WebAPI.Models.Request.Wallet;
 using XPCT.WebAPI.Models.Response;
-using XPCT.WebAPI.Validators.Product;
 using XPCT.WebAPI.Validators;
-using XPCT.WebAPI.Validators.User;
 
 namespace XPCT.WebAPI.Controllers
 {

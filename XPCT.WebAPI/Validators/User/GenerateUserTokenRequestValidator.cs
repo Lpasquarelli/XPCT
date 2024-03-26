@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using XPCT.WebAPI.Models.Request.User;
-using XPCT.WebAPI.Models.Request.Wallet;
 
 namespace XPCT.WebAPI.Validators.User
 {

@@ -2,7 +2,6 @@
 using XPCT.Application.Interfaces;
 using XPCT.Application.Results.User;
 using XPCT.Domain.Entities;
-using XPCT.WebAPI.Models.Response;
 
 namespace XPCT.WebAPI.Worker
 {

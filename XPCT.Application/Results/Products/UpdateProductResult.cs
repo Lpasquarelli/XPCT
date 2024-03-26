@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XPCT.Application.DTO.Response;
-using XPCT.Domain.Entities;
+﻿using XPCT.Application.DTO.Response;
 
 namespace XPCT.Application.Results.Products
 {

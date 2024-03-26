@@ -1,11 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XPCT.Application.Interfaces;
-using XPCT.Application.Results.Products;
 using XPCT.Application.Results.Wallet;
 using XPCT.Domain.Entities;
 using XPCT.Domain.Repositories;
