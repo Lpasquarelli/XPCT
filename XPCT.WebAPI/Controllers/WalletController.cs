@@ -49,7 +49,7 @@ namespace XPCT.WebAPI.Controllers
         /// <param name="request"><see cref="BuyInvestmentsRequest"/></param>
         /// <returns><see cref="WalletIdentifyerResponse"/></returns>
         [HttpPost("buy")]
-        [Authorize(Roles = "CUSTOMER")]
+        [Authorize(Roles = "GERENTE")]
         [SwaggerOperation(Summary = "Compra de Investimento")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(WalletIdentifyerResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResponse))]
